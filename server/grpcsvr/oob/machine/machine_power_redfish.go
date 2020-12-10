@@ -2,6 +2,8 @@ package machine
 
 import (
 	"context"
+	"net"
+	"net/http"
 	"time"
 
 	"github.com/go-logr/logr"
@@ -21,11 +23,22 @@ type redfishBMC struct {
 
 func (r *redfishBMC) Connect(ctx context.Context) error {
 	var errMsg repository.Error
+	var netTransport = &http.Transport{
+		Dial: (&net.Dialer{
+			Timeout: 5 * time.Second,
+		}).Dial,
+		TLSHandshakeTimeout: 5 * time.Second,
+	}
+	var netClient = &http.Client{
+		Timeout:   time.Second * 10,
+		Transport: netTransport,
+	}
 	config := gofish.ClientConfig{
-		Endpoint: "https://" + r.host,
-		Username: r.user,
-		Password: r.password,
-		Insecure: true,
+		Endpoint:   "https://" + r.host,
+		Username:   r.user,
+		Password:   r.password,
+		Insecure:   true,
+		HTTPClient: netClient,
 	}
 
 	c, err := gofish.Connect(config)
