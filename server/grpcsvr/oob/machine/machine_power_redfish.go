@@ -2,6 +2,7 @@ package machine
 
 import (
 	"context"
+	"crypto/tls"
 	"net"
 	"net/http"
 	"time"
@@ -28,6 +29,9 @@ func (r *redfishBMC) Connect(ctx context.Context) error {
 			Timeout: 5 * time.Second,
 		}).Dial,
 		TLSHandshakeTimeout: 5 * time.Second,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 	}
 	var netClient = &http.Client{
 		Timeout:   time.Second * 10,
@@ -143,7 +147,7 @@ func (r *redfishBMC) status(ctx context.Context) (result string, err error) {
 		return result, &errMsg
 	}
 	for _, system := range ss {
-		return string(system.PowerState), &errMsg
+		return string(system.PowerState), nil
 	}
 	return result, nil
 }
