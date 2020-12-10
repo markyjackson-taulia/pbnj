@@ -46,8 +46,8 @@ func (b *bmclibUserManagement) Close(ctx context.Context) {
 func (b *bmclibUserManagement) CreateUser(ctx context.Context) error {
 	users := []*cfgresources.User{
 		{
-			Name:     b.creds.Username,
-			Password: b.creds.Password,
+			Name:     b.creds.GetUsername(),
+			Password: b.creds.GetPassword(),
 			Role:     userRoleToString(b.creds.GetUserRole()),
 			Enable:   true,
 		},
