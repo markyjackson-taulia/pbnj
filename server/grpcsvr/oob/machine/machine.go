@@ -112,6 +112,8 @@ func (m Action) BootDeviceSet(ctx context.Context, device string) (result string
 		switch r := conn.(type) {
 		case common.Connection:
 			defer r.Close(ctx)
+		}
+		switch r := conn.(type) {
 		case oob.BootDeviceSetter:
 			userAction = append(userAction, r)
 		}
@@ -164,6 +166,8 @@ func (m Action) PowerSet(ctx context.Context, action string) (result string, err
 		switch r := conn.(type) {
 		case common.Connection:
 			defer r.Close(ctx)
+		}
+		switch r := conn.(type) {
 		case oob.PowerSetter:
 			pwrActions = append(pwrActions, r)
 		}
