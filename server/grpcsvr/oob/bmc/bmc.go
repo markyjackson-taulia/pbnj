@@ -138,6 +138,11 @@ func (m Action) CreateUser(ctx context.Context) error {
 			userAction = append(userAction, r)
 		}
 	}
+	if len(userAction) == 0 {
+		m.SendStatusMessage("error with " + base + ": " + "no CreateUser implementations")
+		m.Log.V(0).Info("error with "+base, "error", "no CreateUser implementations")
+		return err
+	}
 	err = oob.CreateUser(ctx, userAction)
 	if err != nil {
 		m.SendStatusMessage("error with " + base + ": " + err.Error())

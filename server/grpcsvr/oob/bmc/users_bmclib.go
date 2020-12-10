@@ -48,7 +48,7 @@ func (b *bmclibUserManagement) CreateUser(ctx context.Context) error {
 		{
 			Name:     b.creds.Username,
 			Password: b.creds.Password,
-			Role:     userRoleToString(b.creds.UserRole),
+			Role:     userRoleToString(b.creds.GetUserRole()),
 			Enable:   true,
 		},
 	}
@@ -67,7 +67,7 @@ func (b *bmclibUserManagement) UpdateUser(ctx context.Context) error {
 		{
 			Name:     b.creds.Username,
 			Password: b.creds.Password,
-			Role:     userRoleToString(b.creds.UserRole),
+			Role:     userRoleToString(b.creds.GetUserRole()),
 			Enable:   true,
 		},
 	}
