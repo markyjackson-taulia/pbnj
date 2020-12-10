@@ -36,12 +36,18 @@ type BMCResetter interface {
 // SetPower interface function for power actions
 func SetPower(ctx context.Context, action string, m []PowerSetter) (result string, err error) {
 	for _, elem := range m {
-		result, setErr := elem.PowerSet(ctx, action)
-		if setErr != nil {
-			err = multierror.Append(err, setErr)
-			continue
+		select {
+		case <-ctx.Done():
+			err = multierror.Append(err, ctx.Err())
+			break
+		default:
+			result, setErr := elem.PowerSet(ctx, action)
+			if setErr != nil {
+				err = multierror.Append(err, setErr)
+				continue
+			}
+			return result, err
 		}
-		return result, err
 	}
 	return result, multierror.Append(err, errors.New("power state failed"))
 }
