@@ -46,7 +46,7 @@ func SetPower(ctx context.Context, action string, m []PowerSetter) (result strin
 				err = multierror.Append(err, setErr)
 				continue
 			}
-			return result, err
+			return result, nil
 		}
 	}
 	return result, multierror.Append(err, errors.New("power state failed"))
