@@ -1,6 +1,4 @@
 # PBNJ
-[![Build Status](https://cloud.drone.io/api/badges/tinkerbell/pbnj/status.svg)](https://cloud.drone.io/tinkerbell/pbnj)
-![](https://img.shields.io/badge/Stability-Experimental-red.svg)
 
 This service handles BMC interactions.
 
